@@ -20,5 +20,4 @@ function cleanup()
 trap "cleanup" EXIT
 
 docker build -t ${IMAGE} --build-arg "GITHUB_USER" --build-arg "GITHUB_TOKEN" .
-#curl -s https://ci-tools.anchore.io/inline_scan-latest | bash -s -- -r -f -d Dockerfile ${IMAGE}
 echo "::set-output name=image::${IMAGE}"

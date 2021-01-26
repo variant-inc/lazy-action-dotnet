@@ -6,7 +6,7 @@ inputs:
     description: 'Source file directory'
     required: true
     default: './'
-  dockerfile_dir:  # docker file directory
+  dockerfile_dir_path:  # docker file directory path
     description: 'Dockerfile  directory'
     required: true
   github_token:  # github owner token
@@ -18,9 +18,6 @@ inputs:
   sonar_token:  # sonar token
     description: 'Github token'
     required: true
-  dev_aws_account_id:  # dev aws account id
-    description: 'Dev AWS Account ID'
-    required: true 
   aws_access_key_id:  # aws access key id
     description: 'AWS access key'
     required: true
@@ -55,25 +52,22 @@ inputs:
     description: 'docker push'
     required: true
 
+outputs:
+  image: # image pushed to ECR
+    description: 'Image pushed to ECR'
+
 
 runs:
   using: 'docker'
   image: docker://public.ecr.aws/p4v7w0a5/lazy/donet-base
   env:
-    SOURCE_FILE_PATH: ${{ inputs.src_file_dir }} 
-    CUSTOM_DOCKER_FILE_PATH: ${{ inputs.dockerfile_dir }} 
     GITHUB_USER: $GITHUB_ACTOR
     GITHUB_TOKEN: ${{ inputs.github_token }} 
     GITHUB_OWNER: $OWNER
     GITHUB_OWNER_TOKEN: ${{ inputs.github_owner_token }} 
-    DEV_AWS_ACCOUNT_ID: ${{ inputs.dev_aws_account_id }}
     AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }} 
     AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }} 
     AWS_DEFAULT_REGION: ${{ inputs.aws_region }} 
-    DOCKER_REPO_NAME: ${{ inputs.docker_repo_name }} 
-    DOCKER_IMAGE_NAME: ${{ inputs.docker_image_name }} 
-    SONARCLOUD_PROJECT_KEY: ${{ inputs.sonar_project_key }} 
-    SONAR_ORG: ${{ inputs.sonar_org }} 
-    SONAR_SCAN_ENABLED: ${{ inputs.sonar_scan_enabled }} 
-    NUGET_PUSH: ${{ inputs.nuget_push }} 
-    DOCKER_PUSH: ${{ inputs.docker_push }} 
+
+
+    
