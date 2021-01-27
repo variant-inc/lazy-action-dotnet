@@ -15,7 +15,7 @@ function cleanup()
 {
   set +euo pipefail
   docker image rm ${IMAGE}
-}
+}å
 
 trap "cleanup" EXIT
 

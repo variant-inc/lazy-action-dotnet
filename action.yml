@@ -2,13 +2,14 @@
 name: 'lazy-action-dotnet'
 description: 'Github action to perform build, test , scan and generate image.'
 inputs:
-  src_file_dir:  # source file directory
+  src_file_dir_path:  # source file directory path
     description: 'Source file directory'
     required: true
-    default: './'
+    default: '.'
   dockerfile_dir_path:  # docker file directory path
     description: 'Dockerfile  directory'
     required: true
+    default: '.'
   github_token:  # github owner token
     description: 'Github token'
     required: true
@@ -45,12 +46,15 @@ inputs:
   sonar_scan_enabled:  # sonar scan enabled
     description: 'To check sonar scan needed.'
     required: true
+    default: 'false'
   nuget_push:  # build publish
     description: 'build publish'
     required: true
+    default: 'false'
   docker_push:  # docker push
     description: 'docker push'
     required: true
+    default: 'false'
 
 outputs:
   image: # image pushed to ECR

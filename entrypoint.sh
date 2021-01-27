@@ -18,15 +18,14 @@ echo "Print VERSION_SUFFIX: $VERSION_SUFFIX"
 echo "Current directory : $GITHUB_WORKSPACE"
 
 echo "Start: code build."
-if [ -z "${INPUT_DOCKERFILE_DIR_PATH}" ];
+if [ -z "${INPUT_SRC_FILE_DIR_PATH}" ];
 then
    echo "Running lazy build steps."
    cd $GITHUB_WORKSPACE && dotnet build --configuration Release
 
 else
    echo "Running custom build steps."
-   chmod +x /lazy-scripts/build.sh && /lazy-scripts/build.sh ${INPUT_DOCKER_REPO_NAME} ${INPUT_DOCKER_IMAGE_NAME} sha-${GITHUB_SHA:0:7}
- 
+   cd $INPUT_SRC_FILE_DIR_PATH && dotnet build --configuration Release
 fi
 
 echo "Start: sonar scan."
@@ -35,8 +34,10 @@ then
     if [ -z "${INPUT_DOCKERFILE_DIR_PATH}" ];
     then
         echo "running lazy sonar tests."
+         cd $GITHUB_WORKSPACE && dotnet test
         chmod +x /lazy-scripts/run_tests_sonarscan.sh && /lazy-scripts/run_tests_sonarscan.sh
     else
+        cd $GITHUB_WORKSPACE && dotnet test
         chmod +x /lazy-scripts/scan.sh && /lazy-scripts/scan.sh -o ${INPUT_SONAR_ORG} -k ${INPUT_SONARCLOUD_PROJECT_KEY} -r ${GITHUB_SHA} -b ${BRANCH_NAME} ${INPUT_DOCKER_REPO_NAME} ${INPUT_DOCKER_IMAGE_NAME} sha-${GITHUB_SHA:0:7}
     fi
 fi
