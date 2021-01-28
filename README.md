@@ -44,7 +44,7 @@ jobs:
         fetch-depth: 0         
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action@master
+      uses: variant-inc/lazy-action-dotnet@master
       with:
         src_file_dir: '.'
         dockerfile_dir_path: '.'
