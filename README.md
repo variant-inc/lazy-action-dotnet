@@ -80,7 +80,7 @@ jobs:
 | `docker_repo_name`        |                       | docker repository name.                              | true     |  
 | `docker_image_name`       |                       | docker image name.                                   | true     |  
 | `sonar_project_key`       |   `variant-inc`       | sonar project key.                                   | false    |  
-| `sonar_org`               |   `variant`           | sonar organization.                                  | false    |  
+| `sonar_org`               |   `ariant`            | sonar organization.                                  | false    |  
 | `sonar_scan_enabled`      |    `true`             | set to true if sonar scan enabled or set to false.   | false    |   
 | `nuget_push`              |    `true`             | set to true if nuget push is enabled or set to false.| false    |    
 | `docker_push`             |    `true`             | set to true if push to ECR is enabled set to false.  | false    |    
