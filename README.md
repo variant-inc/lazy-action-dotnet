@@ -65,82 +65,25 @@ jobs:
 
 ### Input Parameters
 
-Input parameters section.
 
-```text
 
-src_file_dir_path:
-This is a mandatory input parameter to define directory of the solution file .
-Sample input : './' , './src/test'
-Required:true
-Default: '.'
-
-dockerfile_dir_path:
-This is a mandatory input parameter to define directory of the dockerfile .
-Sample input : './' , './src/test'
-Required:true
-Default: '.'
-
-Note : Dockerfile is mandantory for now after our phase 2 release this will go optional , if docker file path is provided , lazy action will process based on passed dockerfile , if not it will use our own dockerfile to build and publish the image.
-
-github_token: 
-This is a mandatory input paramter , pass as it is in sample input.This will take secret github token which we set in github account.
-Required:true
-
-github_owner_token
-This is a mandatory input paramter , pass as it is in sample input.This will take secret github owner token which we set in github account.
-Required: true
-
-sonar_token: 
-This is a mandatory input paramter , pass as it is in sample input.This will take secret sonar token which we set in github account.
-Required: true
-
-aws_access_key_id:  
-This is a mandatory input paramter , pass as it is in sample input.This will take secret aws access key id which we set in github account.
-Required: true
-
-aws_secret_access_key:
-This is a mandatory input paramter , pass as it is in sample input.This will take secret aws secret access key which we set in github account.
-Required: true
-
-aws_region: 
-This is an optional input paramter where we set aws region . 
-Required: false
-
-Default: 'us-east-2'
-docker_repo_name: 
-This is a mandatory input paramter , should be your docker repository name.
-Required: true
-
-docker_image_name:  
-This is a mandatory input paramter , should be your docker image name.
-Required: true
-
-sonar_project_key: 
-This is an optional input paramter where we set sonar project key. 
-Required: false
-Default: 'variant-inc'
-
-sonar_org: 
-This is an optional input paramter where we set sonar organization. 
-Required: false
-default: 'variant'
-
-sonar_scan_enabled:  
-This is a mandatory input paramter , set to true if your repository is sonar scan enabled or can set value as false.
-Required: true
-default: false
-
-nuget_push:  
-This is a mandatory input paramter , set to true if your repository needed push to nuget package registry or can set value as false.
-required: true
-default: false
-
-docker_push:  
-This is a mandatory input paramter , set to true if your repository needed docker push to ECR registry or can set value as false.
-Required: true
-default: false
-```
+| Parameter                 | Default               | Description                                          | Required |  Sample input        |
+|---------------------------|-----------------------|------------------------------------------------------|----------|----------------------|
+| `src_file_dir_path`       | `.`                   | Directory of the solution file                       | true     |'./' , './src/test'   |
+| `dockerfile_dir_path`     | `.`                   | Directory of the dockerfile                          | true     |'./' , './src/test'   |
+| `github_token`            |                       | Github token.Pass same secret as sample snippet      | true     |                      |
+| `github_owner_token`      |                       | Github owner token.Pass same secret as sample snippet| true     |                      |
+| `sonar_token`             |                       | Sonar token.Pass same secret as sample snippet.      | true     |                      |
+| `aws_access_key_id`       |                       | aws access key id.Pass same secret as sample snippet.| true     |                      |
+| `aws_secret_access_key`   |                       | aws secret access key.Same secret as sample snippet. | true     |                      |
+| `aws_region`              |                       | aws region.Pass same secret as sample snippet.       | false    |                      |
+| `docker_repo_name`        |                       | docker repository name.                              | true     |                      |
+| `docker_image_name`       |                       | docker image name.                                   | true     |                      |
+| `sonar_project_key`       |   `variant-inc`       | sonar project key.                                   | false    |                      |
+| `sonar_org`               |   `variant`           | sonar organization.                                  | false    |                      |
+| `sonar_scan_enabled`      |    `false`            | set to true if sonar scan enabled or set to false.   | false    |                      |
+| `nuget_push`              |    `false`            | set to true if nuget push is enabled or set to false.| false    |                      |
+| `docker_push`             |    `false`            | set to true if push to ECR is enabled set to false.  | false    |                      |
 
 
 ### Output Parameters

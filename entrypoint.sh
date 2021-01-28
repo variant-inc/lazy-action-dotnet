@@ -25,7 +25,7 @@ then
 
 else
    echo "Running custom build steps."
-   cd $INPUT_SRC_FILE_DIR_PATH && dotnet build --configuration Release
+   cd $INPUT_SRC_FILE_DIR_PATH  && dotnet build --configuration Release
 fi
 
 echo "Start: sonar scan."

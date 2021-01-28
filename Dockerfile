@@ -1,16 +1,14 @@
-FROM gittools/gitversion:5.6.5-alpine.3.12-x64-5.0
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine
 
-ENV  DOTNET_SDK_VERSION=5.0.102
+ENV PATH="$PATH:/root/.dotnet/tools"
 
-# Install .NET SDK
-RUN wget -O dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-musl-x64.tar.gz \
-    && dotnet_sha512='91ac9ea608b38402b2424d7754a823fade38261904a0fbb087f982b324aacf322c3500b520507f21b4aaac40eb059d8ef6d1656fd4f161d5afde2950210e86e8' \
-    && echo "$dotnet_sha512  dotnet.tar.gz" | sha512sum -c - \
-    && mkdir -p /usr/share/dotnet \
-    && tar -C /usr/share/dotnet -oxzf dotnet.tar.gz ./packs ./sdk ./templates ./LICENSE.txt ./ThirdPartyNotices.txt \
-    && rm dotnet.tar.gz \
-    # Trigger first run experience by running arbitrary cmd
-    && dotnet help
+RUN apk add --no-cache bash \
+    curl
+
+RUN curl -sL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet.sh &&\
+  chmod +x /tmp/dotnet.sh &&\
+  /tmp/dotnet.sh --install-dir "/usr/bin" &&\
+  dotnet tool install --global GitVersion.Tool --version 5.6.4 
 
 RUN apk add --no-cache tzdata ca-certificates
 
@@ -29,8 +27,13 @@ RUN apk add --no-cache \
         awscli \
     && rm -rf /var/cache/apk/*
 
+RUN curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip -q awscliv2.zip && \
+  ./aws/install &&\
+  rm -f awscliv2.zip
 RUN aws --version   # Just to make sure its installed alright
-RUN ln -s /tools/dotnet-gitversion /usr/local/bin/gitversion
+
+RUN ln -s /root/.dotnet/tools/dotnet-gitversion /usr/local/bin/gitversion
 COPY entrypoint.sh /entrypoint.sh
 COPY lazy-scripts /lazy-scripts
 ENTRYPOINT ["/entrypoint.sh"]
