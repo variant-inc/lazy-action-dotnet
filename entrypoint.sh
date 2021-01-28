@@ -65,7 +65,7 @@ then
     echo "Start publishing image to github registry."
     if [ -z "${INPUT_DOCKERFILE_DIR_PATH}" ];
     then
-        echo "lazy flow"
+        echo "lazy flow" #todo
     else
         echo "custom nuget flow."
         cd $INPUT_DOCKERFILE_DIR_PATH  && docker build --build-arg GITHUB_USER --build-arg GITHUB_TOKEN --build-arg VERSION_SUFFIX --target publish-nuget-package --tag variant/dotnet-client .
