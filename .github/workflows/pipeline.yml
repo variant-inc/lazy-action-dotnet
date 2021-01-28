@@ -1,0 +1,21 @@
+name: CI Pipeline for lazy dotnet image push to ECR 
+on:
+  push:
+    branches:
+     - master
+
+jobs:
+  build_publish:
+    runs-on: test
+    name: Publish image to ECR
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      run: |
+        docker build -t lazy/donet-base .
+        docker tag lazy/donet-base:latest public.ecr.aws/p4v7w0a5/lazy/donet-base:latest
+        docker push public.ecr.aws/p4v7w0a5/lazy/donet-base:latest
