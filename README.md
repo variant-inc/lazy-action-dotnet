@@ -44,7 +44,7 @@ jobs:
         fetch-depth: 0         
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@master
+      uses: variant-inc/lazy-action@master
       with:
         src_file_dir: '.'
         dockerfile_dir_path: '.'
@@ -67,37 +67,33 @@ jobs:
 
 
 
-| Parameter                 | Default               | Description                                          | Required |  Sample input        |
-|---------------------------|-----------------------|------------------------------------------------------|----------|----------------------|
-| `src_file_dir_path`       | `.`                   | Directory of the solution file                       | true     |'./' , './src/test'   |
-| `dockerfile_dir_path`     | `.`                   | Directory of the dockerfile                          | true     |'./' , './src/test'   |
-| `github_token`            |                       | Github token.Pass same secret as sample snippet      | true     |                      |
-| `github_owner_token`      |                       | Github owner token.Pass same secret as sample snippet| true     |                      |
-| `sonar_token`             |                       | Sonar token.Pass same secret as sample snippet.      | true     |                      |
-| `aws_access_key_id`       |                       | aws access key id.Pass same secret as sample snippet.| true     |                      |
-| `aws_secret_access_key`   |                       | aws secret access key.Same secret as sample snippet. | true     |                      |
-| `aws_region`              |                       | aws region.Pass same secret as sample snippet.       | false    |                      |
-| `docker_repo_name`        |                       | docker repository name.                              | true     |                      |
-| `docker_image_name`       |                       | docker image name.                                   | true     |                      |
-| `sonar_project_key`       |   `variant-inc`       | sonar project key.                                   | false    |                      |
-| `sonar_org`               |   `variant`           | sonar organization.                                  | false    |                      |
-| `sonar_scan_enabled`      |    `false`            | set to true if sonar scan enabled or set to false.   | false    |                      |
-| `nuget_push`              |    `false`            | set to true if nuget push is enabled or set to false.| false    |                      |
-| `docker_push`             |    `false`            | set to true if push to ECR is enabled set to false.  | false    |                      |
+| Parameter                 | Default               | Description                                          | Required |  
+|---------------------------|-----------------------|------------------------------------------------------|----------|
+| `src_file_dir_path`       | `.`                   | Directory of the solution file                       | true     |
+| `dockerfile_dir_path`     | `.`                   | Directory of the dockerfile                          | true     |
+| `github_token`            |                       | Github token.Pass same secret as sample snippet      | true     | 
+| `github_owner_token`      |                       | Github owner token.Pass same secret as sample snippet| true     | 
+| `sonar_token`             |                       | Sonar token.Pass same secret as sample snippet.      | true     | 
+| `aws_access_key_id`       |                       | aws access key id.Pass same secret as sample snippet.| true     |  
+| `aws_secret_access_key`   |                       | aws secret access key.Same secret as sample snippet. | true     | 
+| `aws_region`              |                       | aws region.Pass same secret as sample snippet.       | false    | 
+| `docker_repo_name`        |                       | docker repository name.                              | true     |  
+| `docker_image_name`       |                       | docker image name.                                   | true     |  
+| `sonar_project_key`       |   `variant-inc`       | sonar project key.                                   | false    |  
+| `sonar_org`               |   `variant`           | sonar organization.                                  | false    |  
+| `sonar_scan_enabled`      |    `true`             | set to true if sonar scan enabled or set to false.   | false    |   
+| `nuget_push`              |    `true`             | set to true if nuget push is enabled or set to false.| false    |    
+| `docker_push`             |    `true`             | set to true if push to ECR is enabled set to false.  | false    |    
 
 
 ### Output Parameters
 
-Output parameters section.
+| Parameter                 | Description                                     |
+|---------------------------|-------------------------------------------------|
+| `image`                   | Prints image name generated                     | 
 
-```text
-image:
-Image tag will have docker image name generated.
-
-```
 
 Output parameters can be invoked as mentioned in below snippet.
-
 
 ```yaml
 

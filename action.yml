@@ -46,15 +46,15 @@ inputs:
   sonar_scan_enabled:  # sonar scan enabled
     description: 'To check sonar scan needed.'
     required: true
-    default: 'false'
+    default: 'true'
   nuget_push:  # build publish
     description: 'build publish'
     required: true
-    default: 'false'
+    default: 'true'
   docker_push:  # docker push
     description: 'docker push'
     required: true
-    default: 'false'
+    default: 'true'
 
 outputs:
   image: # image pushed to ECR

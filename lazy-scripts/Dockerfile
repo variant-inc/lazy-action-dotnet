@@ -14,7 +14,6 @@ RUN dotnet restore
 FROM build-env AS test-env
 RUN apk add --no-cache tzdata
 RUN ["dotnet", "test", "--no-build", "--no-restore"]
-CMD ["dotnet", "test", "--no-build", "--no-restore"]
 
 # Copy everything else and publish
 FROM build-env AS publish-project
