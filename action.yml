@@ -4,30 +4,23 @@ description: "Github action to perform build, test , scan and generate image."
 inputs:
   src_file_dir_path: # source file directory path
     description: "Path to the directory which contains the solution file"
-    required: true
+    required: false
     default: "."
   dockerfile_dir_path:
     description: "Path to Dockerfile"
-    required: true
-    default: "."
-  github_token: # github owner token
-    description: "Github token"
-    required: true
-  ecr_repository_region: # aws region
-    description: "ECR Repository Region"
     required: false
-    default: "us-east-1"
   ecr_repository: # docker image name
     description: "Docker image name"
-    required: true
-  sonar_project_key: #  sonar project key
-    description: "Sonar Project Key"
     required: false
-    default: "variant-inc"
-  sonar_scan_enabled: # sonar scan enabled
-    description: "To check sonar scan needed."
-    required: true
     default: "true"
+  sonar_scan_in_docker: # sonar scan enabled
+    description: "Is sonar scan running as part of Dockerfile"
+    required: false
+    default: "false"
+  sonar_scan_in_docker_target: # sonar scan enabled
+    description: "Is sonar scan running as part of Dockerfile"
+    required: false
+    default: "sonarscan-env"
   nuget_push_enabled: # build publish
     description: "Build and Push Nuget Packages"
     required: false
@@ -42,7 +35,4 @@ inputs:
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/donet-base
-  env:
-    GITHUB_USER: $GITHUB_ACTOR
-    GITHUB_TOKEN: ${{ inputs.github_token }}
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1

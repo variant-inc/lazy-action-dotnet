@@ -21,18 +21,17 @@ LABEL com.github.actions.name="Lazy Action Dotnet" \
 
 ARG GLIBC_VER=2.31-r0
 ENV PATH="$PATH:/root/.dotnet/tools"
+ENV AWS_PAGER=""
 
 RUN apk add --no-cache \
   bash \
   curl \
-  tzdata ca-certificates \
+  tzdata \
+  ca-certificates \
   docker-cli \
   openjdk11 \
   jq \
-  python3 \
-  binutils \
-  py3-pip &&\
-  ln -sf python3 /usr/bin/python \
+  binutils &&\
   rm -rf /var/lib/apt/lists/* &&\
   \
   curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub &&\
@@ -49,13 +48,14 @@ RUN apk add --no-cache \
   /usr/local/aws-cli/v2/*/dist/aws_completer \
   /usr/local/aws-cli/v2/*/dist/awscli/data/ac.index \
   /usr/local/aws-cli/v2/*/dist/awscli/examples \
-  apk --no-cache del binutils &&\
-  rm glibc-${GLIBC_VER}.apk &&\
-  rm glibc-bin-${GLIBC_VER}.apk &&\
-  rm -rf /var/cache/apk/*
+  glibc-${GLIBC_VER}.apk \
+  glibc-bin-${GLIBC_VER}.apk &&\
+  rm -rf /var/cache/apk/* &&\
+  aws --version &&\
+  \
+  dotnet tool install --global dotnet-sonarscanner
 
 COPY . /
-RUN chmod +x /entrypoint.sh &&\
-  chmod +x -R /scripts
+RUN chmod +x -R /scripts/* /*.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
