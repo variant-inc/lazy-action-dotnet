@@ -13,26 +13,21 @@ jobs:
       - name: Get current date
         run: echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> ${GITHUB_ENV}
 
-      - name: Get current date
+      - name: Login to ECR
         env:
-          ECR_REPOSITORY_REGION: ${{ secrets.ECR_REPOSITORY_REGION }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-        run: aws ecr-public get-login-password --region $ECR_REPOSITORY_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+        run: docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) $ECR_REGISTRY
 
       - name: Build and push
-        uses: docker/build-push-action@v2
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-        with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            BUILD_DATE=${{ env.BUILD_DATE }}
-            BUILD_REVISION=${{ github.sha }}
-            BUILD_VERSION=${{ github.sha }}
-          push: true
-          tags: |
-            $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            $ECR_REGISTRY/$ECR_REPOSITORY:v1
+        run: |
+          docker build \
+            --build-arg BUILD_DATE \
+            --build-arg BUILD_REVISION=$GITHUB_SHA \
+            --build-arg BUILD_VERSION=$GITHUB_SHA \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:v1 .
+          docker push -a $ECR_REGISTRY/$ECR_REPOSITORY

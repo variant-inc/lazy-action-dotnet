@@ -2,9 +2,11 @@
 name: Linter
 
 on:
-  push:
-    branches-ignore:
+  pull_request:
+    branches:
       - master
+    paths-ignore:
+      - .github/workflows/branch.yaml
 
 jobs:
   lint:
