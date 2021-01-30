@@ -53,7 +53,9 @@ RUN apk add --no-cache \
   rm -rf /var/cache/apk/* &&\
   aws --version &&\
   \
-  dotnet tool install --global dotnet-sonarscanner
+  dotnet tool install dotnet-sonarscanner --tool-path /usr/local/bin &&\
+  dotnet tool install coverlet.console --version 1.7.2 --tool-path /usr/local/bin &&\
+  dotnet tool install dotnet-reportgenerator-globaltool --tool-path /usr/local/bin
 
 COPY . /
 RUN chmod +x -R /scripts/* /*.sh
