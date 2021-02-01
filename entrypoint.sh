@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exo
+set -eo
 
 echo "Start: Setting Prerequisites"
 cd "$GITHUB_WORKSPACE"

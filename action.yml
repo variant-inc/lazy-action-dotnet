@@ -25,6 +25,9 @@ inputs:
     description: "Enable Build and Push Nuget Packages"
     required: false
     default: "false"
+  nuget_package_name: # build publish
+    description: "Nuget Package Name"
+    required: false
   nuget_src_project:
     description: "Path to the Nuget project file (.csproj)"
     required: false

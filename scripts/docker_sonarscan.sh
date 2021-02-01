@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-set -ex
+set -e
 
 cleanup() {
   set +ex
