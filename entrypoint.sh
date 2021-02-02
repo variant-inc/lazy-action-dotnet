@@ -16,6 +16,7 @@ export BRANCH_NAME="$GITVERSION_BRANCHNAME"
 echo "Print Branch name: $BRANCH_NAME"
 
 export GITHUB_USER="$GITHUB_REPOSITORY_OWNER"
+export GITHUB_TOKEN="$GINPUT_ITHUB_TOKEN"
 
 echo "End: Setting Prerequisites"
 
