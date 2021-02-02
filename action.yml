@@ -4,11 +4,11 @@ description: "Github action to perform build, test , scan and generate image."
 inputs:
   src_file_dir_path:
     description: "Directory path to the solution file"
-    required: false
+    required: true
     default: "."
   dockerfile_dir_path:
     description: "Directory path to the dockerfile"
-    required: false
+    required: true
   ecr_repository:
     description: "Ecr repository name"
     required: true
@@ -42,3 +42,5 @@ inputs:
 runs:
   using: "docker"
   image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1
+  env:
+    GITHUB_TOKEN: ${{ inputs.github_token }}

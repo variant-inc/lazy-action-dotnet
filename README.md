@@ -30,7 +30,7 @@ Setting up continuous integration
         fetch-depth: 0
 ```
 
-2. This is to setup some of the global environment variables we use as part of the lazy dotnet action.
+2. This is to add some global environment variables that are used as part of the lazy dotnet action.
 
 ```yaml
     - name: Setup
@@ -59,7 +59,7 @@ jobs:
         fetch-depth: 0
         
     - name: Setup
-      uses: variant-inc/lazy-action-setup@feature/init-setup
+      uses: variant-inc/lazy-action-setup@v1
                   
     - name: Lazy action steps
       id: lazy-action
@@ -90,8 +90,10 @@ jobs:
 | `ecr_repository`             |               | ECR Repository name                                   | true     |
 | `sonar_scan_in_docker`       | "false"       | Is sonar scan running as part of Dockerfile           | false    |
 | `sonar_scan_in_docker_target`|"sonarscan-env"| sonar scan in docker target.                          | false    |
-| `nuget_push_enabled`         | "false"       | If nuget push enabled to package registry. Set this value to true              | false    |
-| `nuget_package_name`         |               | Use only if nuget_push_enabled is enabled and want to give nuget pacakage name.By default, it will be the name of the project.| false |
-| `nuget_src_project`          |               | Use only if nuget_push_enabled is enabled Path to the nuget project file (.csproj).             | false    |  
-| `github_token`               |               | Github Token                                          | false    |  
+| `nuget_push_enabled`         | "false"       | Enabled Nuget Push to Package Registry.               | false    |
+| `nuget_package_name`         |               | Creates the nuget package with this name.Used only when nuget_push_enabled is true.| false |
+| `nuget_src_project`          |               | Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true.| false    |  
+| `github_token`               |               | Github Token                                          | true     |  
 
+
+Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true.
