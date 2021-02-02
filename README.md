@@ -91,7 +91,7 @@ jobs:
 | `sonar_scan_in_docker`       | "false"       | Is sonar scan running as part of Dockerfile           | false    |
 | `sonar_scan_in_docker_target`|"sonarscan-env"| sonar scan in docker target.                          | false    |
 | `nuget_push_enabled`         | "false"       | If nuget push enabled to package registry. Set this value to true              | false    |
-| `nuget_package_name`         |               | Use only if nuget_push_enabled is enabled and want to give nuget pacakage name.By default, it will be the name of the project | false |
+| `nuget_package_name`         |               | Use only if nuget_push_enabled is enabled and want to give nuget pacakage name.By default, it will be the name of the project.| false |
 | `nuget_src_project`          |               | Use only if nuget_push_enabled is enabled Path to the nuget project file (.csproj).             | false    |  
 | `github_token`               |               | Github Token                                          | false    |  
 
