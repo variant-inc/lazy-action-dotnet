@@ -6,7 +6,6 @@ Setting up continuous integration
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
     - [2. Add lazy action setup](#2-add-lazy-action-setup)
-    - [3. Inject lazy environment variables](#3-inject-lazy-environment-variables)
 
   - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
     - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
@@ -31,25 +30,11 @@ Setting up continuous integration
         fetch-depth: 0
 ```
 
-2. This is to setup some of the global environment varibales we use as part of the lazy dotnet action.
+2. This is to setup some of the global environment variables we use as part of the lazy dotnet action.
 
 ```yaml
     - name: Setup
       uses: variant-inc/lazy-action-setup@feature/init-setup
-```
-
-### 3. Inject lazy environment variables
-
-1. This is to inject some of the global environment varibales we created in lazy action setup and feed to dotnet lazy action.
-
-```yaml
-
-    - shell: pwsh
-      run: |
-        Write-Information $RUNNER_WORKDIR_1
-        gci env:* | sort-object name
-        echo "RUNNER_WORKDIR_1=${env:RUNNER_WORKDIR_1}" >> ${env:GITHUB_ENV}
-
 ```
 
 
@@ -75,18 +60,11 @@ jobs:
         
     - name: Setup
       uses: variant-inc/lazy-action-setup@feature/init-setup
-        
-    - shell: pwsh
-      run: |
-        Write-Information $RUNNER_WORKDIR_1
-        gci env:* | sort-object name
-        echo "RUNNER_WORKDIR_1=${env:RUNNER_WORKDIR_1}" >> ${env:GITHUB_ENV}
-          
+                  
     - name: Lazy action steps
       id: lazy-action
       uses: variant-inc/lazy-action-dotnet@feature/create-release
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
         GITHUB_USER: variant-inc
@@ -98,6 +76,7 @@ jobs:
         sonar_scan_in_docker: 'false'
         nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
         nuget_package_name: 'demo-app'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## parameters
@@ -106,13 +85,13 @@ jobs:
 
 | Parameter                    | Default       | Description                                           | Required |
 | ---------------------------- | ------------- | ----------------------------------------------------- | -------- |
-| `src_file_dir_path`          | `.`           | Directory of the solution file                        | true     |
-| `dockerfile_dir_path`        | `.`           | Directory of the dockerfile                           | true     |
+| `src_file_dir_path`          | `.`           | Directory path to the solution file                   | true     |
+| `dockerfile_dir_path`        | `.`           | Directory path to the dockerfile                      | true     |
 | `ecr_repository`             |               | ECR Repository name                                   | true     |
 | `sonar_scan_in_docker`       | "false"       | Is sonar scan running as part of Dockerfile           | false    |
 | `sonar_scan_in_docker_target`|"sonarscan-env"| sonar scan in docker target.                          | false    |
-| `nuget_push_enabled`         | "false"       | Is nuget push enabled to package registry.            | false    |
+| `nuget_push_enabled`         | "false"       | If nuget push enabled to package registry. Set this value to true              | false    |
 | `nuget_package_name`         |               | Use only if nuget_push_enabled is enabled and want to give nuget pacakage name.By default, it will be the name of the project | false |
-| `nuget_src_project`          |               | Path to the Nuget project file (.csproj)              | false    |
-| `container_push_enabled`     | "true"        | If docker container push to ECR is enabled.           | true     |   
+| `nuget_src_project`          |               | Use only if nuget_push_enabled is enabled Path to the nuget project file (.csproj).             | false    |  
+| `github_token`               |               | Github Token                                          | false    |  
 
