@@ -1,37 +1,36 @@
 # action.yml
-name: "lazy-action-dotnet"
+name: "Lazy Action Dotnet"
 description: "Github action to perform build, test , scan and generate image."
 inputs:
-  src_file_dir_path: # source file directory path
+  src_file_dir_path:
     description: "Path to the directory which contains the solution file"
     required: false
     default: "."
   dockerfile_dir_path:
     description: "Path to Dockerfile"
     required: false
-  ecr_repository: # docker image name
-    description: "Docker image name"
-    required: false
-    default: "true"
-  sonar_scan_in_docker: # sonar scan enabled
+  ecr_repository:
+    description: "Ecr repository name"
+    required: true
+  sonar_scan_in_docker:
     description: "Is sonar scan running as part of Dockerfile"
     required: false
     default: "false"
-  sonar_scan_in_docker_target: # sonar scan enabled
-    description: "Is sonar scan running as part of Dockerfile"
+  sonar_scan_in_docker_target:
+    description: "sonar scan in docker target"
     required: false
     default: "sonarscan-env"
-  nuget_push_enabled: # build publish
+  nuget_push_enabled:
     description: "Enable Build and Push Nuget Packages"
     required: false
     default: "false"
-  nuget_package_name: # build publish
+  nuget_package_name:
     description: "Nuget Package Name"
     required: false
   nuget_src_project:
     description: "Path to the Nuget project file (.csproj)"
     required: false
-  container_push_enabled: # docker push
+  container_push_enabled:
     description: "Enable Build and Push Container Image"
     required: false
     default: "true"

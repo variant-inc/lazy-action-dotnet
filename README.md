@@ -5,6 +5,9 @@ Setting up continuous integration
 - [Lazy Action - Dotnet](#lazy-action---dotnet)
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
+    - [2. Add lazy action setup](#2-add-lazy-action-setup)
+    - [3. Inject lazy environment variables](#3-inject-lazy-environment-variables)
+
   - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
     - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
   - [parameters](#parameters)
@@ -18,6 +21,38 @@ Setting up continuous integration
 2. Under your repository name, click Actions.
 3. Find the template that matches the language and tooling you want to use, then click Set up this workflow.Either start with blank workflow or choose any integration workflows.
 
+### 2. Add lazy action setup
+
+1. Add a code checkout step this will be needed to add code to the github workspace.
+
+```yaml
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+```
+
+2. This is to setup some of the global environment varibales we use as part of the lazy dotnet action.
+
+```yaml
+    - name: Setup
+      uses: variant-inc/lazy-action-setup@feature/init-setup
+```
+
+### 3. Inject lazy environment variables
+
+1. This is to inject some of the global environment varibales we created in lazy action setup and feed to dotnet lazy action.
+
+```yaml
+
+    - shell: pwsh
+      run: |
+        Write-Information $RUNNER_WORKDIR_1
+        gci env:* | sort-object name
+        echo "RUNNER_WORKDIR_1=${env:RUNNER_WORKDIR_1}" >> ${env:GITHUB_ENV}
+
+```
+
+
 ## Using Lazy Dotnet Action
 
 You can set up continuous integration for your project using a lazy workflow action.
@@ -30,46 +65,54 @@ See [action.yml](action.yml) for the full documentation for this action's inputs
 
 ```yaml
 jobs:
-  build_test_scan_publish:
-    runs-on: (Use our custom runner)
+  build_test_scan:
+    runs-on: eks
     name: CI Pipeline
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: variant-inc/lazy-action-setup@v1
-      - name: Lazy action steps
-        id: lazy-action
-        uses: variant-inc/lazy-action@v1
-        with:
-          src_file_dir: '.'
-          dockerfile_dir_path: '.'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          ecr_repository: 'demo-repo'
-          nuget_push_enabled: 'true'
-          nuget_src_folder: 'src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj'
-          container_push_enabled: 'true'
-          sonar_scan_enabled: 'false'
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Setup
+      uses: variant-inc/lazy-action-setup@feature/init-setup
+        
+    - shell: pwsh
+      run: |
+        Write-Information $RUNNER_WORKDIR_1
+        gci env:* | sort-object name
+        echo "RUNNER_WORKDIR_1=${env:RUNNER_WORKDIR_1}" >> ${env:GITHUB_ENV}
+          
+    - name: Lazy action steps
+      id: lazy-action
+      uses: variant-inc/lazy-action-dotnet@feature/create-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NUGET_TOKEN: ${{ secrets.PKG_READ }}
+        AWS_DEFAULT_REGION: us-east-2
+        GITHUB_USER: variant-inc
+      with:
+        src_file_dir_path: '.'
+        dockerfile_dir_path: '.'
+        ecr_repository: naveen-demo-app/demo-repo
+        nuget_push_enabled: 'true'
+        sonar_scan_in_docker: 'false'
+        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
+        nuget_package_name: 'demo-app'
 ```
 
 ## parameters
 
 ### Input Parameters
 
-| Parameter               | Default       | Description                                           | Required |
-| ----------------------- | ------------- | ----------------------------------------------------- | -------- |
-| `src_file_dir_path`     | `.`           | Directory of the solution file                        | true     |
-| `dockerfile_dir_path`   | `.`           | Directory of the dockerfile                           | true     |
-| `github_token`          |               | Github token.Pass same secret as sample snippet       | true     |
-| `github_owner_token`    |               | Github owner token.Pass same secret as sample snippet | true     |
-| `sonar_token`           |               | Sonar token.Pass same secret as sample snippet.       | true     |
-| `aws_access_key_id`     |               | aws access key id.Pass same secret as sample snippet. | true     |
-| `aws_secret_access_key` |               | aws secret access key.Same secret as sample snippet.  | true     |
-| `aws_region`            |               | aws region.Pass same secret as sample snippet.        | false    |
-| `docker_repo_name`      |               | docker repository name.                               | true     |
-| `docker_image_name`     |               | docker image name.                                    | true     |
-| `sonar_project_key`     | `variant-inc` | sonar project key.                                    | false    |
-| `sonar_org`             | `ariant`      | sonar organization.                                   | false    |
-| `sonar_scan_enabled`    | `true`        | set to true if sonar scan enabled or set to false.    | false    |
-| `nuget_push`            | `true`        | set to true if nuget push is enabled or set to false. | false    |
-| `docker_push`           | `true`        | set to true if push to ECR is enabled set to false.   | false    |
+| Parameter                    | Default       | Description                                           | Required |
+| ---------------------------- | ------------- | ----------------------------------------------------- | -------- |
+| `src_file_dir_path`          | `.`           | Directory of the solution file                        | true     |
+| `dockerfile_dir_path`        | `.`           | Directory of the dockerfile                           | true     |
+| `ecr_repository`             |               | ECR Repository name                                   | true     |
+| `sonar_scan_in_docker`       | "false"       | Is sonar scan running as part of Dockerfile           | false    |
+| `sonar_scan_in_docker_target`|"sonarscan-env"| sonar scan in docker target.                          | false    |
+| `nuget_push_enabled`         | "false"       | Is nuget push enabled to package registry.            | false    |
+| `nuget_package_name`         |               | Use only if nuget_push_enabled is enabled and want to give nuget pacakage name.By default, it will be the name of the project | false |
+| `nuget_src_project`          |               | Path to the Nuget project file (.csproj)              | false    |
+| `container_push_enabled`     | "true"        | If docker container push to ECR is enabled.           | true     |   
+

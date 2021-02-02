@@ -23,12 +23,6 @@ jobs:
       - name: Get current date
         run: echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> ${GITHUB_ENV}
 
-      # - name: Login to ECR
-      #   env:
-      #     ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-      #     ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-      #   run: docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) $ECR_REGISTRY
-
       - name: Build and push
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
