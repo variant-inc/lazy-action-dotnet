@@ -6,6 +6,12 @@ Setting up continuous integration
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
     - [2. Add lazy action setup](#2-add-lazy-action-setup)
+    - [3. Add the dotnet action](#3-add-the-dotnet-action)
+    - [4. Add octopus action](#4-add-octopus-action)
+  - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
+    - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
+  - [parameters](#parameters)
+    - [Input Parameters](#input-parameters)
 
   - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
     - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
@@ -30,13 +36,58 @@ Setting up continuous integration
         fetch-depth: 0
 ```
 
-2. This is to add some global environment variables that are used as part of the lazy dotnet action.
+1. This is to add some global environment variables that are used as part of the lazy dotnet action.It will be invoked with action name and release version.
 
 ```yaml
     - name: Setup
-      uses: variant-inc/lazy-action-setup@feature/init-setup
+      uses: variant-inc/lazy-action-setup@v1
 ```
 
+Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/master/README.md) for documentation.
+
+### 3. Add the dotnet action
+
+1. This step is to invoke lazy dotnet action with release version by passing enivronment variables and input paramters.Input parameters section provides more insight of optional and required paramters.
+
+```yaml
+
+    - name: Lazy action steps
+      id: lazy-action
+      uses: variant-inc/lazy-action-dotnet@v1
+      env:
+        NUGET_TOKEN: ${{ secrets.PKG_READ }}
+        AWS_DEFAULT_REGION: us-east-2
+        GITHUB_USER: variant-inc
+      with:
+        src_file_dir_path: '.'
+        dockerfile_dir_path: '.'
+        ecr_repository: naveen-demo-app/demo-repo
+        nuget_push_enabled: 'true'
+        sonar_scan_in_docker: 'false'
+        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
+        nuget_package_name: 'demo-app'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+```
+
+### 4. Add octopus action
+
+1. Adding octopus action will add ability to setup continous delivery to octopus.This action can be invoked by action name and release version.
+
+```yaml
+
+    - name: Lazy Action Octopus
+      uses: variant-inc/lazy-action-octopus@v1
+      with:
+        default_branch: ${{ env.MASTER_BRANCH }}
+        deploy_scripts_path: deploy
+        project_name: ${{ env.PROJECT_NAME }}
+        version: ${{ steps.lazy-setup.outputs.image-version }}
+        space_name: ${{ env.OCTOPUS_SPACE_NAME }}
+
+```
+
+Refer [octopus action](https://github.com/variant-inc/lazy-action-octopus/blob/master/README.md) for documentation.
 
 ## Using Lazy Dotnet Action
 
@@ -63,7 +114,7 @@ jobs:
                   
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@feature/create-release
+      uses: variant-inc/lazy-action-dotnet@v1
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -77,6 +128,16 @@ jobs:
         nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
         nuget_package_name: 'demo-app'
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Lazy Action Octopus
+      uses: variant-inc/lazy-action-octopus@v1
+      with:
+        default_branch: ${{ env.MASTER_BRANCH }}
+        deploy_scripts_path: deploy
+        project_name: ${{ env.PROJECT_NAME }}
+        version: ${{ steps.lazy-setup.outputs.image-version }}
+        space_name: ${{ env.OCTOPUS_SPACE_NAME }}
+
 ```
 
 ## parameters
@@ -91,9 +152,6 @@ jobs:
 | `sonar_scan_in_docker`       | "false"       | Is sonar scan running as part of Dockerfile           | false    |
 | `sonar_scan_in_docker_target`|"sonarscan-env"| sonar scan in docker target.                          | false    |
 | `nuget_push_enabled`         | "false"       | Enabled Nuget Push to Package Registry.               | false    |
-| `nuget_package_name`         |               | Creates the nuget package with this name.Used only when nuget_push_enabled is true.| false |
-| `nuget_src_project`          |               | Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true.| false    |  
+| `nuget_package_name`         |               | Creates the nuget package with this name. Used only when nuget_push_enabled is true.| false |
+| `nuget_src_project`          |               | Path to the Nuget Project File (.csproj). Used only when nuget_push_enabled is true. Required if nuget_push_enabled is true.| false    |  
 | `github_token`               |               | Github Token                                          | true     |  
-
-
-Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true.
