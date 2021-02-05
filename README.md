@@ -1,107 +1,155 @@
-# LAZY-DOTNET-ACTION
+# Lazy Action - Dotnet
 
-Setting up continuous integration 
+Setting up continuous integration
 
-- [LAZY-DOTNET-ACTION](#lazy-dotnet-action)
+- [Lazy Action - Dotnet](#lazy-action---dotnet)
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
+    - [2. Add lazy action setup](#2-add-lazy-action-setup)
+    - [3. Add the dotnet action](#3-add-the-dotnet-action)
+    - [4. Add octopus action](#4-add-octopus-action)
   - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
     - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
-  - [Parameters](#parameters)
-    - [Input Parameters](#input-paramters)
-    - [Output Parameters](#output-paramters)
+    - [Input Parameters](#input-parameters)
 
-
+  - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
+    - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
+  - [parameters](#parameters)
+    - [Input Parameters](#input-parameters)
 
 ## Prerequisites
 
 ### 1. Setup github action workflow
 
-
 1. On GitHub, navigate to the main page of the repository.
 2. Under your repository name, click Actions.
-3. Find the template that matches the language and tooling you want to use, then click Set up this workflow.Either start with blank workflow or choose any integration workflows.
+3. Find the template that matches the language and tooling you want to use, then click Set up this workflow. Either start with blank workflow or choose any integration workflows.
+
+### 2. Add lazy action setup
+
+1. Add a code checkout step this will be needed to add code to the github workspace.
+
+```yaml
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+```
+
+1. This is to add some global environment variables that are used as part of the lazy dotnet action. It will output `image_version`.
+
+```yaml
+    - name: Setup
+      uses: variant-inc/lazy-action-setup@v0.1.0
+```
+
+Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/master/README.md) for documentation.
+
+### 3. Add the dotnet action
+
+1. This step is to invoke lazy dotnet action with release version by passing environment variables and input parameters. Input parameters section provides more insight of optional and required parameters.
+
+```yaml
+
+    - name: Lazy action steps
+      id: lazy-action
+      uses: variant-inc/lazy-action-dotnet@v0.1.0
+      env:
+        NUGET_TOKEN: ${{ secrets.PKG_READ }}
+        AWS_DEFAULT_REGION: us-east-2
+        AWS_REGION: us-east-2
+        GITHUB_USER: variant-inc
+      with:
+        src_file_dir_path: '.'
+        dockerfile_dir_path: '.'
+        ecr_repository: naveen-demo-app/demo-repo
+        nuget_push_enabled: 'true'
+        sonar_scan_in_docker: 'false'
+        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
+        nuget_package_name: 'demo-app'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+```
+
+### 4. Add octopus action
+
+1. Adding octopus action will add ability to setup continuos delivery to octopus. This action can be invoked by action name and release version.
+
+```yaml
+
+    - name: Lazy Action Octopus
+      uses: variant-inc/lazy-action-octopus@v0.1.0
+      with:
+        default_branch: ${{ env.MASTER_BRANCH }}
+        deploy_scripts_path: deploy
+        project_name: ${{ env.PROJECT_NAME }}
+        version: ${{ steps.lazy-setup.outputs.image-version }}
+        space_name: ${{ env.OCTOPUS_SPACE_NAME }}
+
+```
+
+Refer [octopus action](https://github.com/variant-inc/lazy-action-octopus/blob/master/README.md) for documentation.
 
 ## Using Lazy Dotnet Action
 
 You can set up continuous integration for your project using a lazy workflow action.
-After you set up CI, you can customize the workflow to meet your needs.By passing the right input parameters with the lazy    dotnet action.    
+After you set up CI, you can customize the workflow to meet your needs. By passing the right input parameters with the lazy dotnet action.
 
 ### Adding lazy dotnet action to workflow
 
-Sample snippet to add lazy action to your workflow code .
+Sample snippet to add lazy action to your workflow code.
 See [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
 
 ```yaml
-
 jobs:
-  build_test_scan_publish:
-    runs-on: (Use our custom runner)
+  build_test_scan:
+    runs-on: eks
     name: CI Pipeline
     steps:
     - uses: actions/checkout@v2
       with:
-        fetch-depth: 0         
+        fetch-depth: 0
+
+    - name: Setup
+      uses: variant-inc/lazy-action-setup@v1
+
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action@master
+      uses: variant-inc/lazy-action-dotnet@v1
+      env:
+        NUGET_TOKEN: ${{ secrets.PKG_READ }}
+        AWS_DEFAULT_REGION: us-east-2
+        GITHUB_USER: variant-inc
       with:
-        src_file_dir: '.'
+        src_file_dir_path: '.'
         dockerfile_dir_path: '.'
-        github_token: ${{ secrets.PKG_READ }}
-        github_owner_token: ${{ secrets.GITHUB_TOKEN }}
-        sonar_token: ${{ secrets.SONAR_TOKEN }}
-        aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-        docker_repo_name: 'demo-app'
-        docker_image_name: 'demo-repo'
-        nuget_push: 'true'
-        docker_push: 'true'
-        sonar_scan_enabled: 'false'
+        ecr_repository: naveen-demo-app/demo-repo
+        nuget_push_enabled: 'true'
+        sonar_scan_in_docker: 'false'
+        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
+        nuget_package_name: 'demo-app'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Lazy Action Octopus
+      uses: variant-inc/lazy-action-octopus@v1
+      with:
+        default_branch: ${{ env.MASTER_BRANCH }}
+        deploy_scripts_path: deploy
+        project_name: ${{ env.PROJECT_NAME }}
+        version: ${{ steps.lazy-setup.outputs.image-version }}
+        space_name: ${{ env.OCTOPUS_SPACE_NAME }}
 
 ```
-
-## parameters
 
 ### Input Parameters
 
-
-
-| Parameter                 | Default               | Description                                          | Required |  
-|---------------------------|-----------------------|------------------------------------------------------|----------|
-| `src_file_dir_path`       | `.`                   | Directory of the solution file                       | true     |
-| `dockerfile_dir_path`     | `.`                   | Directory of the dockerfile                          | true     |
-| `github_token`            |                       | Github token.Pass same secret as sample snippet      | true     | 
-| `github_owner_token`      |                       | Github owner token.Pass same secret as sample snippet| true     | 
-| `sonar_token`             |                       | Sonar token.Pass same secret as sample snippet.      | true     | 
-| `aws_access_key_id`       |                       | aws access key id.Pass same secret as sample snippet.| true     |  
-| `aws_secret_access_key`   |                       | aws secret access key.Same secret as sample snippet. | true     | 
-| `aws_region`              |                       | aws region.Pass same secret as sample snippet.       | false    | 
-| `docker_repo_name`        |                       | docker repository name.                              | true     |  
-| `docker_image_name`       |                       | docker image name.                                   | true     |  
-| `sonar_project_key`       |   `variant-inc`       | sonar project key.                                   | false    |  
-| `sonar_org`               |   `ariant`            | sonar organization.                                  | false    |  
-| `sonar_scan_enabled`      |    `true`             | set to true if sonar scan enabled or set to false.   | false    |   
-| `nuget_push`              |    `true`             | set to true if nuget push is enabled or set to false.| false    |    
-| `docker_push`             |    `true`             | set to true if push to ECR is enabled set to false.  | false    |    
-
-
-### Output Parameters
-
-| Parameter                 | Description                                     |
-|---------------------------|-------------------------------------------------|
-| `image`                   | Prints image name generated                     | 
-
-
-Output parameters can be invoked as mentioned in below snippet.
-
-```yaml
-
-    - name: Get the image name from lazy-action
-      run: echo "Image Name:${{ steps.lazy-action.outputs.image }}"
-
-```
-steps.lazy-action.outputs.image :
-
-* lazy-action : id from your lazy action invocation.
-* image: output parameter id from lazy CI action.
+| Parameter                     | Default         | Description                                                                                                                  | Required |
+| ----------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `src_file_dir_path`           | `.`             | Directory path to the solution file                                                                                          | true     |
+| `dockerfile_dir_path`         | `.`             | Directory path to the dockerfile                                                                                             | true     |
+| `ecr_repository`              |                 | ECR Repository name                                                                                                          | true     |
+| `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                                                                  | false    |
+| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker target.                                                                                                 | false    |
+| `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                                                                      | false    |
+| `nuget_package_name`          |                 | Creates the nuget package with this name. Used only when nuget_push_enabled is true.                                         | false    |
+| `nuget_project_path`           |                 | Path to the Nuget Project File (.csproj). Used only when nuget_push_enabled is true. Required if nuget_push_enabled is true. | false    |
+| `github_token`                |                 | Github Token                                                                                                                 | true     |

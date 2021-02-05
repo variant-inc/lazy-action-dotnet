@@ -1,76 +1,46 @@
 # action.yml
-name: 'lazy-action-dotnet'
-description: 'Github action to perform build, test , scan and generate image.'
+name: "Lazy Action Dotnet"
+description: "Github action to perform build, test , scan and generate image."
 inputs:
-  src_file_dir_path:  # source file directory path
-    description: 'Source file directory'
+  src_file_dir_path:
+    description: "Directory path to the solution file"
     required: true
-    default: '.'
-  dockerfile_dir_path:  # docker file directory path
-    description: 'Dockerfile  directory'
+    default: "."
+  dockerfile_dir_path:
+    description: "Directory path to the dockerfile"
     required: true
-    default: '.'
-  github_token:  # github owner token
-    description: 'Github token'
+  ecr_repository:
+    description: "Ecr repository name"
     required: true
-  github_owner_token:  # github owner token
-    description: 'Github owner token'
-    required: true
-  sonar_token:  # sonar token
-    description: 'Github token'
-    required: true
-  aws_access_key_id:  # aws access key id
-    description: 'AWS access key'
-    required: true
-  aws_secret_access_key:  # aws secret access key
-    description: 'AWS secret access key'
-    required: true
-  aws_region:  # aws region
-    description: 'AWS Region'
+  sonar_scan_in_docker:
+    description: "Is sonar scan running as part of Dockerfile"
     required: false
-    default: 'us-east-2'
-  docker_repo_name:  # docker repo name 
-    description: 'Docker repo name'
-    required: true
-  docker_image_name:  # docker image name 
-    description: 'Docker image name'
-    required: true
-  sonar_project_key:  #  sonar project key
-    description: 'Sonar Project Key'
+    default: "false"
+  sonar_scan_in_docker_target:
+    description: "sonar scan in docker target"
     required: false
-    default: 'variant-inc'
-  sonar_org:  # sonar organization
-    description: 'Sonar organization'
+    default: "sonarscan-env"
+  nuget_push_enabled:
+    description: "Enabled Nuget Push to Package Registry."
     required: false
-    default: 'ariant'
-  sonar_scan_enabled:  # sonar scan enabled
-    description: 'To check sonar scan needed.'
+    default: "false"
+  nuget_package_name:
+    description: "Creates the nuget package with this name.Used only when nuget_push_enabled is true."
+    required: false
+  nuget_project_path:
+    description: "Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true."
+    required: false
+  container_push_enabled:
+    description: "Enable Build and Push Container Image"
+    required: false
+    default: "true"
+  github_token:
+    description: "Github token"
     required: true
-    default: 'true'
-  nuget_push:  # build publish
-    description: 'build publish'
-    required: true
-    default: 'true'
-  docker_push:  # docker push
-    description: 'docker push'
-    required: true
-    default: 'true'
-
-outputs:
-  image: # image pushed to ECR
-    description: 'Image pushed to ECR'
 
 
 runs:
-  using: 'docker'
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/donet-base
+  using: "docker"
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v0.1.0
   env:
-    GITHUB_USER: $GITHUB_ACTOR
-    GITHUB_TOKEN: ${{ inputs.github_token }} 
-    GITHUB_OWNER: $OWNER
-    GITHUB_OWNER_TOKEN: ${{ inputs.github_owner_token }} 
-    AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }} 
-    AWS_SECRET_ACCESS_KEY: ${{ inputs.aws_secret_access_key }} 
-    AWS_DEFAULT_REGION: ${{ inputs.aws_region }} 
-
-    
+    GITHUB_TOKEN: ${{ inputs.github_token }}
