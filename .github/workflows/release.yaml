@@ -1,16 +1,8 @@
 ---
-
-#########################
-#########################
-## Deploy Docker Image  to ECR##
-#########################
-#########################
-
-name: CI Pipeline for lazy dotnet image push to ECR 
+name: CI Pipeline for lazy dotnet image push to ECR
 on:
   release:
-    # Want to run the automation when a release is created
-    types: ['created']
+    types: ["created"]
 
 jobs:
   build:
