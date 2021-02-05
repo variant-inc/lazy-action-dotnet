@@ -27,7 +27,7 @@ inputs:
   nuget_package_name:
     description: "Creates the nuget package with this name.Used only when nuget_push_enabled is true."
     required: false
-  nuget_src_project:
+  nuget_project_path:
     description: "Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true."
     required: false
   container_push_enabled:
