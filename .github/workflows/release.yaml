@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Deploy Docker Image
+    name: Release Build & Push
     runs-on: [test]
     steps:
       - name: Checkout Code

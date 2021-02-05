@@ -12,7 +12,7 @@ on:
       - master
 jobs:
   build:
-    name: Deploy Branch Docker Image
+    name: Branch Build & Push
     runs-on: [test]
     steps:
       - name: Checkout Code
