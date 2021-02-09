@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
@@ -29,5 +29,5 @@ if [ -z "$DOCKERFILE_PATH" ]; then
   dotnet publish -c Release -o publish
 fi
 
-eval "docker build env | cut -f1 -d= | sed 's/^/--build-arg /' -t $IMAGE $DOCKERFILE_PATH"
+eval "docker build $(echo $(env | cut -f1 -d= | sed 's/^/--build-arg /')) -t $IMAGE $DOCKERFILE_PATH"
 docker push "$IMAGE"
