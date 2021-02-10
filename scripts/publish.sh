@@ -29,10 +29,7 @@ if [ -z "$DOCKERFILE_PATH" ]; then
   dotnet publish -c Release -o publish
 fi
 
-echo "naveen"
-$(echo $(env | cut -f1 -d= | sed 's/^/--build-arg /'))
-echo "naveen1"
-eval "docker build $(echo $(env | cut -f1 -d= | sed 's/^/--build-arg /')) -t $IMAGE $DOCKERFILE_PATH"
+eval "docker build env | cut -f1 -d= | sed 's/^/--build-arg /' -t $IMAGE $DOCKERFILE_PATH"
 
 
 docker push "$IMAGE"
