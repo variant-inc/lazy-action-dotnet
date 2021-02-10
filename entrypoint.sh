@@ -26,13 +26,13 @@ echo "End: Sonar Scan"
 echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
 if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "Start: Publish Image to ECR"
-  /scripts/publish.sh
+sh -c "/scripts/publish.sh"
   echo "End: Publish Image to ECR"
 fi
 
 echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
 if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
   echo "Start: Publish Nuget Package"
-  /scripts/nuget_push.sh
+sh -c "/scripts/nuget_push.sh"
   echo "End: Publish Nuget Package"
 fi
