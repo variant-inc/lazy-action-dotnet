@@ -30,7 +30,7 @@ if [ -z "$DOCKERFILE_PATH" ]; then
 fi
 
 env >> .env
-eval "docker build $((xargs -n1 echo '--build-arg' | tr '\n' ' ') < .env) -t $IMAGE $DOCKERFILE_PATH"
+eval "docker build $(xargs -n1 echo '--build-arg' | tr '\n' ' ' < .env) -t $IMAGE $DOCKERFILE_PATH"
 
 docker push "$IMAGE"
 echo "Image publish done"
