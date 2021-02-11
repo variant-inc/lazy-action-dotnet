@@ -29,6 +29,7 @@ if [ -z "$DOCKERFILE_PATH" ]; then
   dotnet publish -c Release -o publish
 fi
 
+env >> .env
 eval "docker build $(cat .env | xargs -n1 echo '--build-arg' | tr '\n' ' ') -t $IMAGE $DOCKERFILE_PATH"
 
 docker push "$IMAGE"
