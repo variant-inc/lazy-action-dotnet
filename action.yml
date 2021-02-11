@@ -41,6 +41,6 @@ inputs:
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-4d5c53af5f25b43cb7682daebae701f5497e23eb
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-3c5b309726d0002a34efd23ca632fa9d4a913215
   env:
     GITHUB_TOKEN: ${{ inputs.github_token }}
