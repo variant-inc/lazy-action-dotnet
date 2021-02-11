@@ -24,11 +24,11 @@ DOCKERFILE_PATH="$INPUT_DOCKERFILE_DIR_PATH"
 mkdir -p /publish
 
 if [ -z "$DOCKERFILE_PATH" ]; then
-  echo "Running lazy publish image."
+  echo "Running lazy publish image"
   DOCKERFILE_PATH=/docker/
   dotnet publish -c Release -o publish
 fi
 
-eval "docker build $(echo $(env | cut -f1 -d= | sed 's/^/--build-arg /')) -t $IMAGE $DOCKERFILE_PATH"
+eval "docker build 'env | cut -f1 -d= | sed 's/^/--build-arg /'' -t $IMAGE $DOCKERFILE_PATH"
 docker push "$IMAGE"
-echo "Image publish done."
+echo "Image publish done"
