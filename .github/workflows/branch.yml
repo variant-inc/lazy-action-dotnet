@@ -8,6 +8,8 @@
 name: Branch dotnet image push to ECR
 on:
   push:
+    paths-ignore:
+      - 'action.yml'
     branches-ignore:
       - master
 jobs:
