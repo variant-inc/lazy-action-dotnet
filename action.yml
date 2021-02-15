@@ -13,7 +13,7 @@ inputs:
     description: "Ecr repository name"
     required: true
   sonar_scan_in_docker:
-    description: "Is sonar scan running as part of Dockerfile"
+    description: "Is sonar scan running as part of Dockerfile?"
     required: false
     default: "false"
   sonar_scan_in_docker_target:
@@ -41,6 +41,6 @@ inputs:
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v0.1.0
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v0.1.1
   env:
     GITHUB_TOKEN: ${{ inputs.github_token }}
