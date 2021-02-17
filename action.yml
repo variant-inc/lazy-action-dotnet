@@ -34,13 +34,16 @@ inputs:
     description: "Enable Build and Push Container Image"
     required: false
     default: "true"
-  github_token:
-    description: "Github token"
+  nuget_pull_token:
+    description: "GitHub token with repo read permissions for pulling NuGet packages"
     required: true
+  nuget_push_token:
+    description: "GitHub token with package write permissions for pushing NuGet packages"
+    required: false
 
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v0.1.2
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-8b736442008b03493d5fd14f0495eaca615babf5
   env:
-    GITHUB_TOKEN: ${{ inputs.github_token }}
+    GITHUB_TOKEN: ${{ inputs.nuget_pull_token }}
