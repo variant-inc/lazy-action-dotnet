@@ -24,12 +24,6 @@ inputs:
     description: "Enabled Nuget Push to Package Registry."
     required: false
     default: "false"
-  nuget_package_name:
-    description: "Creates the nuget package with this name.Used only when nuget_push_enabled is true."
-    required: false
-  nuget_project_path:
-    description: "Path to the Nuget Project File (.csproj).Used only when nuget_push_enabled is true.Required if nuget_push_enabled is true."
-    required: false
   container_push_enabled:
     description: "Enable Build and Push Container Image"
     required: false
@@ -44,6 +38,6 @@ inputs:
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-8b736442008b03493d5fd14f0495eaca615babf5
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-f89e2903df9f056356c9018c99af7774025624da
   env:
     GITHUB_TOKEN: ${{ inputs.nuget_pull_token }}
