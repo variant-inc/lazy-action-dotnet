@@ -64,9 +64,8 @@ Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/
         ecr_repository: naveen-demo-app/demo-repo
         nuget_push_enabled: 'true'
         sonar_scan_in_docker: 'false'
-        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
-        nuget_package_name: 'demo-app'
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        nuget_push_token: ${{ secrets.GITHUB_TOKEN }}
+        nuget_pull_token: ${{ secrets.PKG_READ }}
 
 ```
 
@@ -125,9 +124,8 @@ jobs:
         ecr_repository: naveen-demo-app/demo-repo
         nuget_push_enabled: 'true'
         sonar_scan_in_docker: 'false'
-        nuget_src_project: "src/Variant.ScheduleAdherence.Client/Variant.ScheduleAdherence.Client.csproj"
-        nuget_package_name: 'demo-app'
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        nuget_push_token: ${{ secrets.GITHUB_TOKEN }}
+        nuget_pull_token: ${{ secrets.PKG_READ }}
 
     - name: Lazy Action Octopus
       uses: variant-inc/lazy-action-octopus@v1
@@ -150,6 +148,5 @@ jobs:
 | `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                                                                  | false    |
 | `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker target.                                                                                                 | false    |
 | `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                                                                      | false    |
-| `nuget_package_name`          |                 | Creates the nuget package with this name. Used only when nuget_push_enabled is true.                                         | false    |
-| `nuget_project_path`           |                 | Path to the Nuget Project File (.csproj). Used only when nuget_push_enabled is true. Required if nuget_push_enabled is true. | false    |
-| `github_token`                |                 | Github Token                                                                                                                 | true     |
+| `nuget_pull_token`            |                 | GitHub token with repo read permissions for pulling NuGet packages Token                                                     | true     |
+| `nuget_push_token`            |                 | GitHub token with package write permissions for pushing NuGet packages Token                                                 | false    |
