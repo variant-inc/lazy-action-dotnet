@@ -35,9 +35,8 @@ inputs:
     description: "GitHub token with package write permissions for pushing NuGet packages"
     required: false
 
-
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-a11581595a58c13d547aabc718968521f6ec7f4b
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v0.1.4
   env:
     GITHUB_TOKEN: ${{ inputs.nuget_pull_token }}
