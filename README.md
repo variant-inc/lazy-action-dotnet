@@ -52,7 +52,7 @@ Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/
 
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@v0.1.0
+      uses: variant-inc/lazy-action-dotnet@v0.1.4
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -140,13 +140,13 @@ jobs:
 
 ### Input Parameters
 
-| Parameter                     | Default         | Description                                                                                                                  | Required |
-| ----------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `src_file_dir_path`           | `.`             | Directory path to the solution file                                                                                          | true     |
-| `dockerfile_dir_path`         | `.`             | Directory path to the dockerfile                                                                                             | true     |
-| `ecr_repository`              |                 | ECR Repository name                                                                                                          | true     |
-| `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                                                                  | false    |
-| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker target.                                                                                                 | false    |
-| `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                                                                      | false    |
-| `nuget_pull_token`            |                 | GitHub token with repo read permissions for pulling NuGet packages Token                                                     | true     |
-| `nuget_push_token`            |                 | GitHub token with package write permissions for pushing NuGet packages Token                                                 | false    |
+| Parameter                     | Default         | Description                                                                  | Required |
+| ----------------------------- | --------------- | ---------------------------------------------------------------------------- | -------- |
+| `src_file_dir_path`           | `.`             | Directory path to the solution file                                          | true     |
+| `dockerfile_dir_path`         | `.`             | Directory path to the dockerfile                                             | true     |
+| `ecr_repository`              |                 | ECR Repository name                                                          | true     |
+| `sonar_scan_in_docker`        | "false"         | Is sonar scan running as part of Dockerfile                                  | false    |
+| `sonar_scan_in_docker_target` | "sonarscan-env" | sonar scan in docker target.                                                 | false    |
+| `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                      | false    |
+| `nuget_pull_token`            |                 | GitHub token with repo read permissions for pulling NuGet packages Token     | true     |
+| `nuget_push_token`            |                 | GitHub token with package write permissions for pushing NuGet packages Token | false    |
