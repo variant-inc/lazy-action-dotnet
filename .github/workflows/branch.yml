@@ -1,10 +1,4 @@
 ---
-#########################
-#########################
-## Deploy Branch Docker Image to ECR ##
-#########################
-#########################
-
 name: Branch dotnet image push to ECR
 on:
   push:

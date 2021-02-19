@@ -55,7 +55,14 @@ RUN apk add --no-cache \
   \
   dotnet tool install dotnet-sonarscanner --tool-path /usr/local/bin &&\
   dotnet tool install coverlet.console --version 1.7.2 --tool-path /usr/local/bin &&\
-  dotnet tool install dotnet-reportgenerator-globaltool --tool-path /usr/local/bin
+  dotnet tool install dotnet-reportgenerator-globaltool --tool-path /usr/local/bin &&\
+  curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh &&\
+  chmod +x dotnet-install.sh &&\
+  ./dotnet-install.sh --channel Current &&\
+  ./dotnet-install.sh --channel LTS &&\
+  ./dotnet-install.sh --channel 5.0 &&\
+  ./dotnet-install.sh --channel 3.1 &&\
+  ln -sf /root/.dotnet/dotnet /usr/bin/dotnet
 
 COPY . /
 RUN chmod +x -R /scripts/* /*.sh
