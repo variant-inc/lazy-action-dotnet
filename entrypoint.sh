@@ -30,6 +30,10 @@ if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "End: Publish Image to ECR"
 fi
 
+echo "Start: Trivy Scan"
+sh -c "/scripts/trivy_scan.sh"
+echo "End: Trivy Scan"
+
 echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
 if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
   echo "Start: Publish Nuget Package"
