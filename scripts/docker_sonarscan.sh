@@ -9,9 +9,11 @@ cleanup() {
 
 trap "cleanup" EXIT
 eval "docker build --target $INPUT_SONAR_SCAN_IN_DOCKER_TARGET -t sonarscan . $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
-args="-e SONAR_TOKEN sonarscan -d testresults -o $SONAR_ORG -k $SONAR_PROJECT_KEY -r $GITHUB_SHA"
+args=("-d testresults" "-o $SONAR_ORG" "-k $SONAR_PROJECT_KEY" "-r $GITHUB_SHA")
 if [ -z "$PULL_REQUEST_KEY" ]; then
-  docker run --rm "$args" -b "$BRANCH_NAME"
+    args+=("-b $BRANCH_NAME")
 else
-  docker run --rm "$args" -p "$PULL_REQUEST_KEY"
+    args+=("-p $PULL_REQUEST_KEY")
 fi
+
+docker run --rm -e SONAR_TOKEN sonarscan "${args[@]}"
