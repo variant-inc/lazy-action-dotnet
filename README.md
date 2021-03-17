@@ -39,7 +39,7 @@ Setting up continuous integration
 
 ```yaml
     - name: Setup
-      uses: variant-inc/lazy-action-setup@v0.1.0
+      uses: variant-inc/actions-setup@v1
 ```
 
 Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/README.md) for documentation.
@@ -52,7 +52,7 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
 
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@v0.1.4
+      uses: variant-inc/actions-dotnet@v1
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -76,7 +76,7 @@ Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/R
 ```yaml
 
     - name: Lazy Action Octopus
-      uses: variant-inc/lazy-action-octopus@v0.1.0
+      uses: variant-inc/actions-octopus@v1
       with:
         default_branch: ${{ env.MASTER_BRANCH }}
         deploy_scripts_path: deploy
@@ -109,11 +109,11 @@ jobs:
         fetch-depth: 0
 
     - name: Setup
-      uses: variant-inc/lazy-action-setup@v1
+      uses: variant-inc/actions-setup@v1
 
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@v1
+      uses: variant-inc/actions-dotnet@v1
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -128,7 +128,7 @@ jobs:
         nuget_pull_token: ${{ secrets.PKG_READ }}
 
     - name: Lazy Action Octopus
-      uses: variant-inc/lazy-action-octopus@v1
+      uses: variant-inc/actions-octopus@v1
       with:
         default_branch: ${{ env.MASTER_BRANCH }}
         deploy_scripts_path: deploy
