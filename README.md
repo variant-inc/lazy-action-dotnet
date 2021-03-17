@@ -1,19 +1,19 @@
-# Lazy Action - Dotnet
+# Actions - Dotnet
 
 Setting up continuous integration
 
-- [Lazy Action - Dotnet](#lazy-action---dotnet)
+- [Actions - Dotnet](#actions---dotnet)
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
-    - [2. Add lazy action setup](#2-add-lazy-action-setup)
+    - [2. Add actions setup](#2-add-actions-setup)
     - [3. Add the dotnet action](#3-add-the-dotnet-action)
     - [4. Add octopus action](#4-add-octopus-action)
-  - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
-    - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
+  - [Using Dotnet Action](#using-dotnet-action)
+    - [Adding dotnet action to workflow](#adding-dotnet-action-to-workflow)
     - [Input Parameters](#input-parameters)
 
-  - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
-    - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
+  - [Using Dotnet Action](#using-dotnet-action)
+    - [Adding dotnet action to workflow](#adding-dotnet-action-to-workflow)
   - [parameters](#parameters)
     - [Input Parameters](#input-parameters)
 
@@ -25,7 +25,7 @@ Setting up continuous integration
 2. Under your repository name, click Actions.
 3. Find the template that matches the language and tooling you want to use, then click Set up this workflow. Either start with blank workflow or choose any integration workflows.
 
-### 2. Add lazy action setup
+### 2. Add actions setup
 
 1. Add a code checkout step this will be needed to add code to the github workspace.
 
@@ -35,24 +35,24 @@ Setting up continuous integration
         fetch-depth: 0
 ```
 
-1. This is to add some global environment variables that are used as part of the lazy dotnet action. It will output `image_version`.
+1. This is to add some global environment variables that are used as part of the dotnet action. It will output `image_version`.
 
 ```yaml
     - name: Setup
-      uses: variant-inc/lazy-action-setup@v0.1.0
+      uses: variant-inc/actions-setup@v1
 ```
 
-Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/master/README.md) for documentation.
+Refer [actions setup](https://github.com/variant-inc/actions-setup/blob/master/README.md) for documentation.
 
 ### 3. Add the dotnet action
 
-1. This step is to invoke lazy dotnet action with release version by passing environment variables and input parameters. Input parameters section provides more insight of optional and required parameters.
+1. This step is to invoke dotnet action with release version by passing environment variables and input parameters. Input parameters section provides more insight of optional and required parameters.
 
 ```yaml
 
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@v0.1.4
+      uses: variant-inc/actions-dotnet@v1
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -76,7 +76,7 @@ Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/
 ```yaml
 
     - name: Lazy Action Octopus
-      uses: variant-inc/lazy-action-octopus@v0.1.0
+      uses: variant-inc/actions-octopus@v1
       with:
         default_branch: ${{ env.MASTER_BRANCH }}
         deploy_scripts_path: deploy
@@ -86,16 +86,16 @@ Refer [lazy action setup](https://github.com/variant-inc/lazy-action-setup/blob/
 
 ```
 
-Refer [octopus action](https://github.com/variant-inc/lazy-action-octopus/blob/master/README.md) for documentation.
+Refer [octopus action](https://github.com/variant-inc/actions-octopus/blob/master/README.md) for documentation.
 
-## Using Lazy Dotnet Action
+## Using Dotnet Action
 
-You can set up continuous integration for your project using a lazy workflow action.
-After you set up CI, you can customize the workflow to meet your needs. By passing the right input parameters with the lazy dotnet action.
+You can set up continuous integration for your project using an actions workflow action.
+After you set up CI, you can customize the workflow to meet your needs. By passing the right input parameters with the dotnet action.
 
-### Adding lazy dotnet action to workflow
+### Adding dotnet action to workflow
 
-Sample snippet to add lazy action to your workflow code.
+Sample snippet to add actions to your workflow code.
 See [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
 
 ```yaml
@@ -109,11 +109,11 @@ jobs:
         fetch-depth: 0
 
     - name: Setup
-      uses: variant-inc/lazy-action-setup@v1
+      uses: variant-inc/actions-setup@v1
 
     - name: Lazy action steps
       id: lazy-action
-      uses: variant-inc/lazy-action-dotnet@v1
+      uses: variant-inc/actions-dotnet@v1
       env:
         NUGET_TOKEN: ${{ secrets.PKG_READ }}
         AWS_DEFAULT_REGION: us-east-2
@@ -128,7 +128,7 @@ jobs:
         nuget_pull_token: ${{ secrets.PKG_READ }}
 
     - name: Lazy Action Octopus
-      uses: variant-inc/lazy-action-octopus@v1
+      uses: variant-inc/actions-octopus@v1
       with:
         default_branch: ${{ env.MASTER_BRANCH }}
         deploy_scripts_path: deploy
