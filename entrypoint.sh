@@ -34,9 +34,9 @@ echo "Start: Trivy Scan"
 sh -c "/scripts/trivy_scan.sh"
 echo "End: Trivy Scan"
 
-echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
-if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
-  echo "Start: Publish Nuget Package"
-  /scripts/nuget_push.sh
-  echo "End: Publish Nuget Package"
-fi
+# echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
+# if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
+#   echo "Start: Publish Nuget Package"
+#   /scripts/nuget_push.sh
+#   echo "End: Publish Nuget Package"
+# fi
