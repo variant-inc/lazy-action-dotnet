@@ -19,10 +19,7 @@ else
     echo "Directory $GITHUB_WORKSPACE/trivy does not exists."
 fi
 
-
-
-trivy --exit-code 1 redis:6.0.10-buster
-echo $?
+trivy --severity=CRITICAL,HIGH --exit-code 1 redis:6.0.10-buster
 
 # trivy $IMAGE
 
