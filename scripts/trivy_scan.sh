@@ -21,7 +21,8 @@ fi
 
 
 
-trivy redis:6.0.10-buster
+trivy --exit-code 1 redis:6.0.10-buster
+echo $?
 
 # trivy $IMAGE
 
