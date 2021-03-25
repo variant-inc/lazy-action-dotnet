@@ -19,6 +19,9 @@ else
     echo "Directory $GITHUB_WORKSPACE/trivy does not exists."
 fi
 
+docker pull  064859874041.dkr.ecr.us-east-1.amazonaws.com/mobile/driver-status-worker:1.0.0-54
 
-trivy $IMAGE
+trivy 064859874041.dkr.ecr.us-east-1.amazonaws.com/mobile/driver-status-worker:1.0.0-54
+
+# trivy $IMAGE
 
