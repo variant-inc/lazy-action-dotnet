@@ -7,7 +7,6 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 IMAGE="$ECR_REGISTRY/$INPUT_ECR_REPOSITORY:$IMAGE_VERSION"
 
-# trivy $IMAGE
 echo "Download trivy file from s3." 
 aws s3 cp s3://trivy-root/.trivyignore .
 
@@ -19,7 +18,6 @@ else
     echo "Directory $GITHUB_WORKSPACE/trivy does not exists."
 fi
 
-trivy --severity=CRITICAL,HIGH --exit-code 1 redis:6.0.10-buster
+trivy --severity=CRITICAL,HIGH,MEDIUM --exit-code 1 $IMAGE
 
-# trivy $IMAGE
 

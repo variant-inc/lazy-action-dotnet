@@ -19,24 +19,24 @@ export GITHUB_USER="$GITHUB_REPOSITORY_OWNER"
 
 echo "End: Setting Prerequisites"
 
-# echo "Start: Sonar Scan"
-# sh -c "/scripts/coverage_scan.sh"
-# echo "End: Sonar Scan"
+echo "Start: Sonar Scan"
+sh -c "/scripts/coverage_scan.sh"
+echo "End: Sonar Scan"
 
-# echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
-# if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
-#   echo "Start: Publish Image to ECR"
-#   /scripts/publish.sh
-#   echo "End: Publish Image to ECR"
-# fi
+echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
+if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
+  echo "Start: Publish Image to ECR"
+  /scripts/publish.sh
+  echo "End: Publish Image to ECR"
+fi
 
 echo "Start: Trivy Scan"
 sh -c "/scripts/trivy_scan.sh"
 echo "End: Trivy Scan"
 
-# echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
-# if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
-#   echo "Start: Publish Nuget Package"
-#   /scripts/nuget_push.sh
-#   echo "End: Publish Nuget Package"
-# fi
+echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
+if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
+  echo "Start: Publish Nuget Package"
+  /scripts/nuget_push.sh
+  echo "End: Publish Nuget Package"
+fi
