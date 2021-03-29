@@ -8,7 +8,7 @@ ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 IMAGE="$ECR_REGISTRY/$INPUT_ECR_REPOSITORY:$IMAGE_VERSION"
 
 echo "Download trivy file from s3." 
-aws s3 cp s3://trivy-root/.trivyignore .
+aws s3 cp s3://trivy-ops/.trivyignore .
 
 if [ -d "$GITHUB_WORKSPACE/trivy" ] 
 then
