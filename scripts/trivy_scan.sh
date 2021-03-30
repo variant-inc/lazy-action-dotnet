@@ -15,7 +15,7 @@ aws configure set aws_secret_access_key $(echo "$credentials" | jq -r '.Credenti
 aws configure set aws_session_token $(echo "$credentials" | jq -r '.Credentials.SessionToken') --profile ops
 
 echo "Download trivy file from s3." 
-aws s3 cp s3://trivy-ops/.trivyignore .
+aws --profile s3 cp s3://trivy-ops/.trivyignore .
 
 echo "Print repo name: $GITHUB_REPOSITORY"
 
@@ -23,7 +23,7 @@ if [[ ! -z $(aws s3api list-buckets --query 'Buckets[?Name==`'$GITHUB_REPOSITORY
 then
   echo "Repo bucket exists."
    mkdir trivy
-   cd trivy && aws s3 cp s3://$GITHUB_REPOSITORY/.trivyignore .
+   cd trivy && aws --profile s3 cp s3://$GITHUB_REPOSITORY/.trivyignore .
    cat $GITHUB_WORKSPACE/trivy/.trivyignore >> .trivyignore
 else
   echo "Repo bucket does not exists."
