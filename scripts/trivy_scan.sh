@@ -28,7 +28,8 @@ else
   mkdir trivy
   cd trivy && aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/${PATH_TO_FOLDER}/.trivyignore .
   echo "Downloaded from specific repo."
-  cat $GITHUB_WORKSPACE/trivy/.trivyignore >> .trivyignore
+  pwd
+  #cat $GITHUB_WORKSPACE/trivy/.trivyignore >> .trivyignore
 fi
 
 cat .trivyignore
