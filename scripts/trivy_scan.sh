@@ -26,18 +26,11 @@ if [ "$totalFoundObjects" -eq "0" ]; then
 else
   echo "Repo file found $totalFoundObjects"
   mkdir trivy
-  cd trivy && aws --profile s3 cp s3://${S3_BUCKET_NAME}/${PATH_TO_FOLDER}/.trivyignore .
+  cd trivy && aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/${PATH_TO_FOLDER}/.trivyignore .
   cat $GITHUB_WORKSPACE/trivy/.trivyignore >> .trivyignore
 fi
 
 cat .trivyignore
-# if [ -d "$GITHUB_WORKSPACE/trivy" ] 
-# then
-#     echo "Directory trivy exists." 
-#     cat $GITHUB_WORKSPACE/trivy/.trivyignore >> .trivyignore
-# else
-#     echo "Directory $GITHUB_WORKSPACE/trivy does not exists."
-# fi
 
 trivy --severity=CRITICAL,HIGH,MEDIUM --exit-code 1 $IMAGE
 
