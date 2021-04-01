@@ -11,12 +11,8 @@ Setting up continuous integration
   - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
     - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
     - [Input Parameters](#input-parameters)
-
-  - [Using Lazy Dotnet Action](#using-lazy-dotnet-action)
-    - [Adding lazy dotnet action to workflow](#adding-lazy-dotnet-action-to-workflow)
-  - [parameters](#parameters)
-    - [Input Parameters](#input-parameters)
-
+  - [What it does](#what-it-does)
+  
 ## Prerequisites
 
 ### 1. Setup github action workflow
@@ -150,3 +146,7 @@ jobs:
 | `nuget_push_enabled`          | "false"         | Enabled Nuget Push to Package Registry.                                      | false    |
 | `nuget_pull_token`            |                 | GitHub token with repo read permissions for pulling NuGet packages Token     | true     |
 | `nuget_push_token`            |                 | GitHub token with package write permissions for pushing NuGet packages Token | false    |
+
+## What it does
+
+Github action dotnet is a CI utility which does build , test , sonar scan , build and push image to ECR , does the trivy vulnerabilities scan and publish package to github registry .This action runs some of the mandatory CI steps and also has ability to skip some of the steps that are not required.
