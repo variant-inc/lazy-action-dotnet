@@ -64,6 +64,9 @@ RUN apk add --no-cache \
   ./dotnet-install.sh --channel 3.1 &&\
   ln -sf /root/.dotnet/dotnet /usr/bin/dotnet
 
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin
+
 COPY . /
 RUN chmod +x -R /scripts/* /*.sh
 
