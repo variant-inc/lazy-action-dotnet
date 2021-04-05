@@ -16,12 +16,12 @@ aws configure set aws_access_key_id "$(echo "$credentials" | jq -r '.Credentials
 aws configure set aws_secret_access_key "$(echo "$credentials" | jq -r '.Credentials.SecretAccessKey')" --profile ops
 aws configure set aws_session_token "$(echo "$credentials" | jq -r '.Credentials.SessionToken')" --profile ops
 
+S3_BUCKET_NAME=trivy-ops
+PATH_TO_FOLDER=$GITHUB_REPOSITORY
 echo "Print repo name: $GITHUB_REPOSITORY"
 echo "Download root trivy file from s3" 
 eval "aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/.trivyignore ."
 
-S3_BUCKET_NAME=trivy-ops
-PATH_TO_FOLDER=$GITHUB_REPOSITORY
 mkdir trivy
 echo "Checking repo trivy file from s3"
 
