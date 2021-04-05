@@ -29,5 +29,6 @@ if [ -z "$DOCKERFILE_PATH" ]; then
   dotnet publish -c Release -o publish
 fi
 
-eval "docker build -t $IMAGE $DOCKERFILE_PATH $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
+#eval "docker build -t $IMAGE $DOCKERFILE_PATH $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
+echo "Use Same image built during trivi scan"
 docker push "$IMAGE"

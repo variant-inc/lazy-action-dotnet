@@ -1,8 +1,8 @@
-# Lazy Action - Dotnet
+# Actions - Dotnet
 
 Setting up continuous integration
 
-- [Lazy Action - Dotnet](#lazy-action---dotnet)
+- [Actions - Dotnet](#actions---dotnet)
   - [Prerequisites](#prerequisites)
     - [1. Setup github action workflow](#1-setup-github-action-workflow)
     - [2. Add actions setup](#2-add-actions-setup)

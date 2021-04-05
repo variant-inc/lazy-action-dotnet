@@ -5,6 +5,9 @@ set -e
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 IMAGE="$ECR_REGISTRY/$INPUT_ECR_REPOSITORY:$IMAGE_VERSION"
+
+echo "Building docker image"
+eval "docker build -t $IMAGE $INPUT_DOCKERFILE_DIR_PATH $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
 S3_BUCKET_NAME=trivy-ops
 
 credentials=$(aws sts assume-role --role-arn arn:aws:iam::108141096600:role/ops-github-runner --role-session-name ops-s3)
@@ -19,18 +22,22 @@ echo "Download root trivy file from s3"
 eval "aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/.trivyignore ."
 
 PATH_TO_FOLDER=$GITHUB_REPOSITORY
-totalFoundObjects="$(aws s3 --profile ops ls s3://"${S3_BUCKET_NAME}"/"${PATH_TO_FOLDER}"/.trivyignore --recursive --summarize | grep "Total Objects:" | sed 's/[^0-9]*//g')"
-if [ "$totalFoundObjects" -eq "0" ]; then
-   echo "There are no repo files found"
+PATH_TO_FOLDER=variant-inc/demo-app1
+mkdir trivy
+echo "Checking repo trivy file from s3"
+
+exit_status=0
+cd trivy && aws --profile ops s3 cp s3://"${S3_BUCKET_NAME}"/"${PATH_TO_FOLDER}"/.trivyignore . || exit_status=$?
+echo "$exit_status"
+if [ "$exit_status" -ne 0 ]; then
+   echo "No repo files found, exit Status: $exit_status"
 else
-  echo "Repo file found $totalFoundObjects"
-  mkdir trivy
-  cd trivy && eval "aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/${PATH_TO_FOLDER}/.trivyignore ."
-  echo "Downloaded from specific repo"
-  cd "$GITHUB_WORKSPACE" && cat trivy/.trivyignore >> .trivyignore
+    echo "Repo file found"
+    cd "$GITHUB_WORKSPACE" && cat trivy/.trivyignore >> .trivyignore
+
 fi
 
 echo "Printing trivy ignore file" 
-cat .trivyignore
+cd "$GITHUB_WORKSPACE" && cat .trivyignore
 
 eval "trivy --exit-code 1 $IMAGE"
