@@ -13,9 +13,9 @@ LABEL com.github.actions.name="Lazy Action Dotnet" \
   org.opencontainers.image.revision=$BUILD_REVISION \
   org.opencontainers.image.version=$BUILD_VERSION \
   org.opencontainers.image.authors="Variant DevOps <devops@drivevariant.com>" \
-  org.opencontainers.image.url="https://github.com/variant-inc/lazy-action-dotnet" \
-  org.opencontainers.image.source="https://github.com/variant-inc/lazy-action-dotnet" \
-  org.opencontainers.image.documentation="https://github.com/variant-inc/lazy-action-dotnet" \
+  org.opencontainers.image.url="https://github.com/variant-inc/actions-dotnet" \
+  org.opencontainers.image.source="https://github.com/variant-inc/actions-dotnet" \
+  org.opencontainers.image.documentation="https://github.com/variant-inc/actions-dotnet" \
   org.opencontainers.image.vendor="AWS ECR" \
   org.opencontainers.image.description="Build and Push Dotnet Packages"
 
@@ -63,6 +63,9 @@ RUN apk add --no-cache \
   ./dotnet-install.sh --channel 5.0 &&\
   ./dotnet-install.sh --channel 3.1 &&\
   ln -sf /root/.dotnet/dotnet /usr/bin/dotnet
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin
 
 COPY . /
 RUN chmod +x -R /scripts/* /*.sh

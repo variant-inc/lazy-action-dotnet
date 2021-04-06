@@ -30,4 +30,9 @@ if [ -z "$DOCKERFILE_PATH" ]; then
 fi
 
 eval "docker build -t $IMAGE $DOCKERFILE_PATH $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
+
+echo "Start: Trivy Scan"
+sh -c "/scripts/trivy_scan.sh"
+echo "End: Trivy Scan"
+
 docker push "$IMAGE"
