@@ -6,9 +6,6 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 IMAGE="$ECR_REGISTRY/$INPUT_ECR_REPOSITORY:$IMAGE_VERSION"
 
-echo "Building docker image"
-eval "docker build -t $IMAGE $INPUT_DOCKERFILE_DIR_PATH $(for i in $(env); do out+="--build-arg $i "; done; echo "$out")"
-
 credentials=$(aws sts assume-role --role-arn arn:aws:iam::108141096600:role/ops-github-runner --role-session-name ops-s3)
 
 export AWS_PAGER=""
