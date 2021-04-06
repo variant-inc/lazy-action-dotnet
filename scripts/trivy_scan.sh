@@ -33,10 +33,8 @@ if [ "$exit_status" -ne 0 ]; then
 else
     echo "Repo file found"
     cd "$GITHUB_WORKSPACE" && cat trivy/.trivyignore >> .trivyignore
-
 fi
 
 echo "Printing trivy ignore file" 
 cd "$GITHUB_WORKSPACE" && cat .trivyignore
-
 eval "trivy --exit-code 1 $IMAGE"
