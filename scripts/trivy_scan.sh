@@ -20,13 +20,13 @@ echo "Download root trivy file from s3"
 eval "aws --profile ops s3 cp s3://${S3_BUCKET_NAME}/.trivyignore ."
 
 mkdir trivy
-echo "Checking repo trivy file from s3"
+echo "Checking for repo trivy file in s3"
 
 exit_status=0
 cd trivy && aws --profile ops s3 cp s3://"${S3_BUCKET_NAME}"/"${PATH_TO_FOLDER}"/.trivyignore . || exit_status=$?
 echo "$exit_status"
 if [ "$exit_status" -ne 0 ]; then
-   echo "No repo files found, exit Status: $exit_status"
+   echo "No repo files found, exit status: $exit_status"
 else
     echo "Repo file found"
     cd "$GITHUB_WORKSPACE" && cat trivy/.trivyignore >> .trivyignore
@@ -34,4 +34,9 @@ fi
 
 echo "Printing trivy ignore file" 
 cd "$GITHUB_WORKSPACE" && cat .trivyignore
+
+echo "Checking for low level vulnerablities" 
+eval "trivy --exit-code 0 --severity=HIGH,MEDIUM,LOW,UNKNOWN $IMAGE"
+
+echo "Checking for critical risk vulnerablities"
 eval "trivy --exit-code 1 --severity CRITICAL $IMAGE"
