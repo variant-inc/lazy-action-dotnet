@@ -34,4 +34,4 @@ fi
 
 echo "Printing trivy ignore file" 
 cd "$GITHUB_WORKSPACE" && cat .trivyignore
-eval "trivy --exit-code 1 $IMAGE"
+eval "trivy --exit-code 1 --severity CRITICAL $IMAGE"
