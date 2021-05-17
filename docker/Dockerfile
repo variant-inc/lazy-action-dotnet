@@ -1,6 +1,6 @@
-ARG VERSION=3.1-alpine
+ARG VERSION=5.0-alpine
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:$VERSION
+FROM mcr.microsoft.com/dotnet/aspnet:$VERSION
 RUN apk add --no-cache tzdata
 WORKDIR /app
 COPY publish .
