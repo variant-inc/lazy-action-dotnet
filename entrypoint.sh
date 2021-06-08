@@ -23,12 +23,10 @@ echo "Start: Sonar Scan"
 sh -c "/scripts/coverage_scan.sh"
 echo "End: Sonar Scan"
 
-echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
-if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
-  echo "Start: Publish Image to ECR"
-  /scripts/publish.sh
-  echo "End: Publish Image to ECR"
-fi
+echo "Start: Start running Collections.sh"
+git clone -b v1.0 https://github.com/variant-inc/actions-collection.git
+source ./actions-collection/collection.sh docker_publish
+echo "END: Finished running Collections.sh"
 
 echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
 if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
