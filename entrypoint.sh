@@ -7,6 +7,9 @@ cd "$GITHUB_WORKSPACE"
 cd "$INPUT_SRC_FILE_DIR_PATH"
 echo "Current directory: $(pwd)"
 
+echo "Cloning into actions-collection..."
+git clone -b feature/CLOUD-440-removing-trivy-scan-sh https://github.com/variant-inc/actions-collection.git ./actions-collection
+
 export AWS_WEB_IDENTITY_TOKEN_FILE="/token"
 echo "$AWS_WEB_IDENTITY_TOKEN" >> "$AWS_WEB_IDENTITY_TOKEN_FILE"
 
@@ -26,7 +29,7 @@ echo "End: Sonar Scan"
 echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
 if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "Start: Publish Image to ECR"
-  /scripts/publish.sh
+  ./actions-collection/scripts/publish.sh
   echo "End: Publish Image to ECR"
 fi
 
