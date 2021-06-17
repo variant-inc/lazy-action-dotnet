@@ -39,3 +39,7 @@ if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
   /scripts/nuget_push.sh
   echo "End: Publish Nuget Package"
 fi
+
+echo "Start: Clean up"
+sudo git clean -fdx
+echo "End: Clean up"
