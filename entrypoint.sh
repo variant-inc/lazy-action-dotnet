@@ -41,5 +41,5 @@ if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
 fi
 
 echo "Start: Clean up"
-sudo git clean -fdx
+git clean -fdx
 echo "End: Clean up"
