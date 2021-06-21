@@ -26,6 +26,7 @@ ENV AWS_PAGER=""
 RUN apk add --no-cache \
   bash \
   curl \
+  git \
   tzdata \
   ca-certificates \
   docker-cli \
