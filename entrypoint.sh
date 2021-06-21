@@ -33,6 +33,10 @@ echo "Start: Sonar Scan"
 sh -c "/scripts/coverage_scan.sh"
 echo "End: Sonar Scan"
 
+echo "Start: Checking ECR Repo"
+./actions-collection/collection.sh ecr_create "$INPUT_ECR_REPOSITORY"
+echo "End: Checking ECR Repo"
+
 echo "Container Push: $INPUT_CONTAINER_PUSH_ENABLED"
 if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "Start: Publish Image to ECR"
