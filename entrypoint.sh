@@ -15,7 +15,7 @@ cd "$INPUT_SRC_FILE_DIR_PATH"
 echo "Current directory: $(pwd)"
 
 echo "Cloning into actions-collection..."
-git clone -b v1 https://github.com/variant-inc/actions-collection.git ./actions-collection
+git clone -b feature/CLOUD-314-output-image-name https://github.com/variant-inc/actions-collection.git ./actions-collection
 
 export AWS_WEB_IDENTITY_TOKEN_FILE="/token"
 echo "$AWS_WEB_IDENTITY_TOKEN" >> "$AWS_WEB_IDENTITY_TOKEN_FILE"
