@@ -35,6 +35,10 @@ inputs:
     description: "GitHub token with package write permissions for pushing NuGet packages"
     required: false
 
+outputs:
+  image_name:
+    description: "Image Name"
+
 runs:
   using: "docker"
   image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:v1.1.1
