@@ -43,12 +43,12 @@ if [ "$INPUT_CONTAINER_PUSH_ENABLED" = 'true' ]; then
   echo "End: Publish Image to ECR"
 fi
 
-echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
-if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
-  echo "Start: Publish Nuget Package"
-  /scripts/nuget_push.sh
-  echo "End: Publish Nuget Package"
-fi
+# echo "Nuget Publish: $INPUT_NUGET_PUSH_ENABLED"
+# if [ "$INPUT_NUGET_PUSH_ENABLED" = 'true' ]; then
+#   echo "Start: Publish Nuget Package"
+#   /scripts/nuget_push.sh
+#   echo "End: Publish Nuget Package"
+# fi
 
 echo "Start: Clean up"
 git clean -fdx
