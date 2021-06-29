@@ -36,3 +36,4 @@ sh -c "/scripts/trivy_scan.sh"
 echo "End: Trivy Scan"
 
 docker push "$IMAGE"
+echo "::set-output name=image_name::$IMAGE"
