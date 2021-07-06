@@ -37,6 +37,6 @@ inputs:
 
 runs:
   using: "docker"
-  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-02ccbe94aa42853788ff404f1a843aad683ca3aa
+  image: docker://public.ecr.aws/p4v7w0a5/lazy/dotnet-action:sha-cb17baed216d89ffad59b3ce1c425be1c4f0a497
   env:
     GITHUB_TOKEN: ${{ inputs.nuget_pull_token }}
